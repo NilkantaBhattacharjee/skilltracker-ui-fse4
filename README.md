@@ -25,3 +25,17 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Angular CLI installation issue troubleshooting
+Check Node version using this command: node --version
+Check npm version using this command: npm --version
+Check angular cli version using this command: ng --version
+Angular CLI might not be installed initially in the system. 
+Run this command for installing angular cli: npm install -g @angular/cli
+Check angular version: ng --version
+If ng is still not recognizable then set system and user environment variable by adding: C:\Users\<<cogjava405>>\AppData\Roaming\npm
+Then run this command from visual studio code: set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+To check the list of execution policy: Get-ExecutionPolicy -list
+System restart might be needed. First try without trying system restart.
+ng command should now be recognizable.
+
