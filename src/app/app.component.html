@@ -1,57 +1,84 @@
-<div>
+<h5 style="text-align: center;color: rgb(32, 9, 116);">Skill Tracker App</h5>
+<div class="container" style="background-color: lightcyan;">
+  <div *ngIf="showMsg==true" style="color: red;">Please enter search criteria in any of the below fields</div>
   <form [formGroup]="searchForm" (ngSubmit)="searchAssociates()">
     <div>
-      <div>
-        <label for="name">Name: </label>
-        <input id="name" type="text" formControlName="name" placeholder="Name" />
-      </div>
-      <div>
-        <label for="name">Associate Id: </label>
-        <input id="associateId" type="text" formControlName="associateId" placeholder="Associate Id" />
-      </div>
-      <div>
-        <label for="name">Skill: </label>
-        <input id="skill" type="text" formControlName="skill" placeholder="Skill" />
-      </div>
+      <table style="width:100%; border:none">
+        <tr style="border:none">
+          <td style="border:none"><label for="name">Name: </label></td>
+          <td style="border:none"><input id="name" type="text" formControlName="name" placeholder="Name" /></td>
+        </tr>
+        <tr style="border:none">
+          <td style="border:none"><label for="name">Associate Id: </label></td>
+          <td style="border:none"><input id="associateId" type="text" formControlName="associateId"
+              placeholder="Associate Id" /></td>
+        </tr>
+        <tr style="border:none">
+          <td style="border:none"><label for="name">Skill: </label></td>
+          <td style="border:none"><input id="skill" type="text" formControlName="skill" placeholder="Skill" /></td>
+        </tr>
+      </table>
     </div>
+    <br />
     <div class="button-container btn-group-sm">
-      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="submit" class="btn btn-primary">Search</button>&nbsp;
       <button type="button" class="btn btn-primary" (click)="reset(searchForm)">Reset</button>
     </div>
   </form>
-  <div class="container" *ngFor="let associateDetail of associateDetailList">
-    <div class="row">
-      <div class="col-xs-4">
-        <table class="table table-bordered">
-
-          <tr>Name</tr>
-          <tr>AssociateId</tr>
-          <tr>Email</tr>
-          <tr>Mobile</tr>
-
-          <tr>{{associateDetail.name}}</tr>
-          <tr>{{associateDetail.associateId}}</tr>
-          <tr>{{associateDetail.email}}</tr>
-          <tr>{{associateDetail.mobile}}</tr>
-
+  <br />
+</div>
+<div class="container" style="background-color:lightgoldenrodyellow"
+  *ngFor="let associateDetail of associateDetailList">
+  <table style="width:100%">
+    <tr>
+      <td>
+        <table style="width:100%; border:1px solid black;">
+          <tr>
+            <td>Name:</td>
+            <td>{{associateDetail.name}}</td>
+          </tr>
+          <tr>
+            <td>Associate Id:</td>
+            <td>{{associateDetail.associateId}}</td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td>{{associateDetail.email}}</td>
+          </tr>
+          <tr>
+            <td>Mobile No:</td>
+            <td>{{associateDetail.mobile}}</td>
+          </tr>
         </table>
-      </div>
+      </td>&nbsp;
 
-      <div class="col-xs-4" *ngFor="let skill of associateDetail.skills">
-        <div *ngIf="skill.type=='TECHNICAL'">
-            Inside technical block
-          <div>{{skill.name}}</div>
-          <div>{{skill.level}}</div>
-        </div>
-      </div>
+      <td style="width:25%; border:1px solid black;">
+        <table>
+          <h6>Technical Skill</h6>
+          <ng-container *ngFor="let skill of associateDetail.skills">
+            <ng-container *ngIf="skill.type=='TECHNICAL'">
+              <tr>
+                <td style="width:25%; border:1px solid black">{{skill.name}}</td>
+                <td style="width:25%; border:1px solid black; text-align: center;">{{skill.level}}</td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </table>
+      </td>&nbsp;
 
-      <div class="col-xs-4" *ngFor="let skill of associateDetail.skills">
-        <div *ngIf="skill.type=='NON-TECHNICAL'">
-            Inside Non techinal block
-          <div>{{skill.name}}</div>
-          <div>{{skill.level}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
+      <td style="width:25%; border:1px solid black;">
+        <h6>Non-Technical Skill</h6>
+        <ng-container *ngFor="let skill of associateDetail.skills">
+          <table style="width:100%; border:1px solid black;" *ngIf="skill.type=='NON-TECHNICAL'">
+            <tr>
+              <td style="width:25%; border:1px solid black">{{skill.name}}</td>
+              <td style="width:25%; border:1px solid black; text-align: center;">{{skill.level}}</td>
+            </tr>
+          </table>
+        </ng-container>
+      </td>
+
+    </tr>
+  </table>
+  <hr />
 </div>
