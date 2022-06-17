@@ -1,21 +1,23 @@
 <h5 style="text-align: center;color: rgb(32, 9, 116);">Skill Tracker App</h5>
 <div class="container" style="background-color: lightcyan;">
-  <div *ngIf="showMsg==true" style="color: red;">Please enter search criteria in any of the below fields</div>
+  <div *ngIf="showMsg==true" style="color: red;">{{errorMsg}}</div>
   <form [formGroup]="searchForm" (ngSubmit)="searchAssociates()">
     <div>
       <table style="width:100%; border:none">
         <tr style="border:none">
           <td style="border:none"><label for="name">Name: </label></td>
-          <td style="border:none"><input id="name" type="text" formControlName="name" placeholder="Name" /></td>
+          <td style="border:none"><input id="name" type="text" formControlName="name" 
+            placeholder="Name" (keyup)="disableOtherFields('name')"/></td>
         </tr>
         <tr style="border:none">
-          <td style="border:none"><label for="name">Associate Id: </label></td>
+          <td style="border:none"><label for="associateId">Associate Id: </label></td>
           <td style="border:none"><input id="associateId" type="text" formControlName="associateId"
-              placeholder="Associate Id" /></td>
+              placeholder="Associate Id" (keyup)="disableOtherFields('associateId')"/></td>
         </tr>
         <tr style="border:none">
-          <td style="border:none"><label for="name">Skill: </label></td>
-          <td style="border:none"><input id="skill" type="text" formControlName="skill" placeholder="Skill" /></td>
+          <td style="border:none"><label for="skill">Skill: </label></td>
+          <td style="border:none"><input id="skill" type="text" formControlName="skill" 
+            placeholder="Skill" (keyup)="disableOtherFields('skill')"/></td>
         </tr>
       </table>
     </div>
@@ -27,6 +29,7 @@
   </form>
   <br />
 </div>
+
 <div class="container" style="background-color:lightgoldenrodyellow"
   *ngFor="let associateDetail of associateDetailList">
   <table style="width:100%">

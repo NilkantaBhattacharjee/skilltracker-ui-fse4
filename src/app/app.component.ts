@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   associateDetailList: AssociateDetails[] = [];
   associateDetail: any;
   showMsg: boolean = false;
+  errorMsg: any;
   constructor(
     private fb: FormBuilder,
     private appService: AppService
@@ -27,38 +28,37 @@ export class AppComponent implements OnInit {
   }
 
   searchAssociates() {
-    console.log('Search associate called..' + this.searchForm.value['associateId']);
+    console.log('Search associate called..');
     this.associateDetailList.length = 0;
-    let searhType: string;
+    let searchType: string;
     let searchValue: string;
-    searhType = 'name';
+    searchType = 'name';
     searchValue = this.searchForm.value['name'];
-    if (searchValue == '') {
-      searhType = 'associateId';
+    if (searchValue == '' || searchValue == undefined) {
+      searchType = 'associateId';
       searchValue = this.searchForm.value['associateId'];
     }
-    if (searchValue == '') {
-      searhType = 'skill';
+    if (searchValue == '' || searchValue == undefined) {
+      searchType = 'skill';
       searchValue = this.searchForm.value['skill'];
     }
-    if (searchValue == '') {
+    if (searchValue == '' || searchValue == undefined) {
+      this.errorMsg = 'Please enter search criteria in any of the below fields';
       this.showMsg = true;
     } else {
-      this.appService.getAsscociateDetails(searhType, searchValue).subscribe({
+      console.log('searchType=' + searchType + ' and searchValue=' + searchValue);
+      this.appService.getAsscociateDetails(searchType, searchValue).subscribe({
         next: (successResponse: any) => {
-          console.log('Success response : ' + successResponse);
           if (successResponse.profiles) {
-            //this.associateDetailList = (successResponse.profiles as Partial<AssociateDetails>[]) ?? [];
-            console.log('successResponse.profiles: ' + successResponse.profiles[0].userId);
             this.associateDetail = successResponse.profiles[0];
             let profiles: any[] = successResponse.profiles;
             profiles.forEach(val => this.associateDetailList.push(Object.assign({}, val)));
-            console.log('associateDetailList: ' + this.associateDetailList[0].name);
-            console.log('associateDetailList: ' + this.associateDetailList[0].skills[0].name);
           }
         },
         error: (error) => {
-          console.log('error occured : ' + error);
+          console.log('error occured : ' + error.message);
+          this.showMsg = true;
+          this.errorMsg = 'Some unexpected error occured. Probably no records found. Please refine your search criteria.';
         },
         complete: () => {
 
@@ -74,6 +74,32 @@ export class AppComponent implements OnInit {
       const control = form.get(field);
       control?.setValue('');
     });
+    this.searchForm.controls['name'].enable();
+    this.searchForm.controls['associateId'].enable();
+    this.searchForm.controls['skill'].enable();
+  }
+
+  disableOtherFields(event: string) {
+    if (event == 'name' && this.searchForm.controls['name'].value
+      && this.searchForm.controls['name'].value != '') {
+      this.searchForm.controls['associateId'].disable();
+      this.searchForm.controls['skill'].disable();
+    }
+    else if (event == 'associateId' && this.searchForm.controls['associateId'].value
+      && this.searchForm.controls['associateId'].value != '') {
+      this.searchForm.controls['name'].disable();
+      this.searchForm.controls['skill'].disable();
+    }
+    else if (event == 'skill' && this.searchForm.controls['skill'].value
+      && this.searchForm.controls['skill'].value != '') {
+      this.searchForm.controls['name'].disable();
+      this.searchForm.controls['associateId'].disable();
+    }
+    else {
+      this.searchForm.controls['name'].enable();
+      this.searchForm.controls['associateId'].enable();
+      this.searchForm.controls['skill'].enable();
+    }
   }
 
 }
