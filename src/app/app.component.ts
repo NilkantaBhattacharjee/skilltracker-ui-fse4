@@ -9,6 +9,15 @@ import { AssociateDetails } from './model/associate-details';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
+  page: number = 1;
+  count: number = 0;
+  tableSize: number = 1;
+  tableSizes: any = [1, 2, 3, 4, 5];
+
+  searchType: string = '';
+  searchValue: string = '';
+
   searchForm: FormGroup = this.fb.group({
     name: [{ value: '', disabled: false }],
     associateId: [{ value: '', disabled: false }],
@@ -23,48 +32,49 @@ export class AppComponent implements OnInit {
     private appService: AppService
   ) { }
 
-  ngOnInit() {
-    //this.searchForm.controls['name'].disable();
-  }
+  ngOnInit() { }
 
   searchAssociates() {
     console.log('Search associate called..');
     this.associateDetailList.length = 0;
-    let searchType: string;
-    let searchValue: string;
-    searchType = 'name';
-    searchValue = this.searchForm.value['name'];
-    if (searchValue == '' || searchValue == undefined) {
-      searchType = 'associateId';
-      searchValue = this.searchForm.value['associateId'];
+    this.searchType = 'name';
+    this.searchValue = this.searchForm.value['name'];
+    if (this.searchValue == '' || this.searchValue == undefined) {
+      this.searchType = 'associateId';
+      this.searchValue = this.searchForm.value['associateId'];
     }
-    if (searchValue == '' || searchValue == undefined) {
-      searchType = 'skill';
-      searchValue = this.searchForm.value['skill'];
+    if (this.searchValue == '' || this.searchValue == undefined) {
+      this.searchType = 'skill';
+      this.searchValue = this.searchForm.value['skill'];
     }
-    if (searchValue == '' || searchValue == undefined) {
+    if (this.searchValue == '' || this.searchValue == undefined) {
       this.errorMsg = 'Please enter search criteria in any of the below fields';
       this.showMsg = true;
     } else {
-      console.log('searchType=' + searchType + ' and searchValue=' + searchValue);
-      this.appService.getAsscociateDetails(searchType, searchValue).subscribe({
-        next: (successResponse: any) => {
-          if (successResponse.profiles) {
-            this.associateDetail = successResponse.profiles[0];
-            let profiles: any[] = successResponse.profiles;
-            profiles.forEach(val => this.associateDetailList.push(Object.assign({}, val)));
-          }
-        },
-        error: (error) => {
-          console.log('error occured : ' + error.message);
-          this.showMsg = true;
-          this.errorMsg = 'Some unexpected error occured. Probably no records found. Please refine your search criteria.';
-        },
-        complete: () => {
-
-        }
-      });
+      console.log('searchType=' + this.searchType + ' and searchValue=' + this.searchValue);
+      this.fetchAssociateDetails();
     }
+  }
+
+  fetchAssociateDetails() {
+    this.appService.getAsscociateDetails(this.searchType, this.searchValue).subscribe({
+      next: (successResponse: any) => {
+        if (successResponse.profiles) {
+          this.associateDetail = successResponse.profiles[0];
+          let profiles: any[] = successResponse.profiles;
+          profiles.forEach(val => this.associateDetailList.push(Object.assign({}, val)));
+        }
+      },
+      error: (error) => {
+        console.log('error occured : ' + error.message);
+        this.showMsg = true;
+        this.errorMsg = 'Some unexpected error occured. No records found. Please refine your search criteria.'
+          + ' If problem continues, please contact system administrator.';
+      },
+      complete: () => {
+
+      }
+    });
   }
 
   reset(form: FormGroup) {
@@ -100,6 +110,16 @@ export class AppComponent implements OnInit {
       this.searchForm.controls['associateId'].enable();
       this.searchForm.controls['skill'].enable();
     }
+  }
+
+  onTableDataChange(event: any) {
+    this.page = event;
+  }
+
+  onTableSizeChange(event: any): void {
+    this.tableSize = event.target.value;
+    this.page = 1;
+    this.fetchAssociateDetails();
   }
 
 }

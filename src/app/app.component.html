@@ -6,18 +6,18 @@
       <table style="width:100%; border:none">
         <tr style="border:none">
           <td style="border:none"><label for="name">Name: </label></td>
-          <td style="border:none"><input id="name" type="text" formControlName="name" 
-            placeholder="Name" (keyup)="disableOtherFields('name')"/></td>
+          <td style="border:none"><input id="name" type="text" formControlName="name" placeholder="Name"
+              (keyup)="disableOtherFields('name')" /></td>
         </tr>
         <tr style="border:none">
           <td style="border:none"><label for="associateId">Associate Id: </label></td>
           <td style="border:none"><input id="associateId" type="text" formControlName="associateId"
-              placeholder="Associate Id" (keyup)="disableOtherFields('associateId')"/></td>
+              placeholder="Associate Id" (keyup)="disableOtherFields('associateId')" /></td>
         </tr>
         <tr style="border:none">
           <td style="border:none"><label for="skill">Skill: </label></td>
-          <td style="border:none"><input id="skill" type="text" formControlName="skill" 
-            placeholder="Skill" (keyup)="disableOtherFields('skill')"/></td>
+          <td style="border:none"><input id="skill" type="text" formControlName="skill" placeholder="Skill"
+              (keyup)="disableOtherFields('skill')" /></td>
         </tr>
       </table>
     </div>
@@ -30,8 +30,11 @@
   <br />
 </div>
 
-<div class="container" style="background-color:lightgoldenrodyellow"
-  *ngFor="let associateDetail of associateDetailList">
+<div class="container" style="background-color:lightgoldenrodyellow" *ngFor="let associateDetail of associateDetailList | paginate : {
+      itemsPerPage: tableSize,
+      currentPage: page,
+      totalItems: count
+    }; let i = index">
   <table style="width:100%">
     <tr>
       <td>
@@ -70,18 +73,29 @@
       </td>&nbsp;
 
       <td style="width:25%; border:1px solid black;">
-        <h6>Non-Technical Skill</h6>
-        <ng-container *ngFor="let skill of associateDetail.skills">
-          <table style="width:100%; border:1px solid black;" *ngIf="skill.type=='NON-TECHNICAL'">
-            <tr>
-              <td style="width:25%; border:1px solid black">{{skill.name}}</td>
-              <td style="width:25%; border:1px solid black; text-align: center;">{{skill.level}}</td>
-            </tr>
-          </table>
-        </ng-container>
+        <table>
+          <h6>Non-Technical Skill</h6>
+          <ng-container *ngFor="let skill of associateDetail.skills">
+            <ng-container *ngIf="skill.type=='NON-TECHNICAL'">
+              <tr>
+                <td style="width:25%; border:1px solid black">{{skill.name}}</td>
+                <td style="width:25%; border:1px solid black; text-align: center;">{{skill.level}}</td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </table>
       </td>
-
     </tr>
   </table>
-  <hr />
+  <div class="d-flex justify-content-center">
+    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+    </pagination-controls>
+  </div>
 </div>
+<!-- <div>
+  <select (change)="onTableSizeChange($event)">
+    <option *ngFor="let size of tableSizes">
+      {{size}}
+    </option>
+  </select>
+</div> -->
