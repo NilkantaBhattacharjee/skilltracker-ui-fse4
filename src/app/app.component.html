@@ -1,4 +1,4 @@
-<h5 style="text-align: center;color: rgb(32, 9, 116);">Skill Tracker App</h5>
+<h4 style="text-align: center;color: rgb(32, 9, 116);">Skill Tracker App</h4>
 <div class="container" style="background-color: lightcyan;">
   <div *ngIf="showMsg==true" style="color: red;">{{errorMsg}}</div>
   <form [formGroup]="searchForm" (ngSubmit)="searchAssociates()">
@@ -87,10 +87,11 @@
       </td>
     </tr>
   </table>
-  <div class="d-flex justify-content-center">
-    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-    </pagination-controls>
-  </div>
+  <br/>
+</div>
+<div class="d-flex justify-content-center" *ngIf="showPagination==true" >
+  <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+  </pagination-controls>
 </div>
 <!-- <div>
   <select (change)="onTableSizeChange($event)">

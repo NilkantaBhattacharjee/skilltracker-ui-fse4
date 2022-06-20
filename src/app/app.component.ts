@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
 
   page: number = 1;
   count: number = 0;
-  tableSize: number = 1;
+  tableSize: number = 2;
   tableSizes: any = [1, 2, 3, 4, 5];
 
   searchType: string = '';
@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   associateDetailList: AssociateDetails[] = [];
   associateDetail: any;
   showMsg: boolean = false;
+  showPagination: boolean = false;
   errorMsg: any;
   constructor(
     private fb: FormBuilder,
@@ -63,6 +64,8 @@ export class AppComponent implements OnInit {
           this.associateDetail = successResponse.profiles[0];
           let profiles: any[] = successResponse.profiles;
           profiles.forEach(val => this.associateDetailList.push(Object.assign({}, val)));
+          this.showPagination = true;
+          this.showMsg = false;
         }
       },
       error: (error) => {
@@ -72,7 +75,6 @@ export class AppComponent implements OnInit {
           + ' If problem continues, please contact system administrator.';
       },
       complete: () => {
-
       }
     });
   }
@@ -80,6 +82,7 @@ export class AppComponent implements OnInit {
   reset(form: FormGroup) {
     this.associateDetailList.length = 0;
     this.showMsg = false;
+    this.showPagination = false;
     Object.keys(form.controls).forEach(field => {
       const control = form.get(field);
       control?.setValue('');
