@@ -59,8 +59,8 @@
       </td>&nbsp;
 
       <td style="width:25%; border:1px solid black;">
+        <h6>Technical Skill</h6>
         <table>
-          <h6>Technical Skill</h6>
           <ng-container *ngFor="let skill of associateDetail.skills">
             <ng-container *ngIf="skill.type=='TECHNICAL'">
               <tr>
@@ -73,8 +73,8 @@
       </td>&nbsp;
 
       <td style="width:25%; border:1px solid black;">
-        <table>
-          <h6>Non-Technical Skill</h6>
+        <h6>Non-Technical Skill</h6>
+        <table> 
           <ng-container *ngFor="let skill of associateDetail.skills">
             <ng-container *ngIf="skill.type=='NON-TECHNICAL'">
               <tr>
