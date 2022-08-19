@@ -15,16 +15,20 @@ export class AppService {
     let url: string;
     switch(searchBy){
       case 'name':
-        url = 'http://localhost:9080/skill-tracker/api/v1/admin/name/';
+        //url = 'http://localhost:9080/skill-tracker/api/v1/admin/name/';
+        url = 'http://queryservice-env.eba-2rgvnhxx.ap-south-1.elasticbeanstalk.com/skill-tracker/api/v1/admin/name/';
         break;
       case 'associateId':
-        url = 'http://localhost:9080/skill-tracker/api/v1/admin/associateid/';
+        //url = 'http://localhost:9080/skill-tracker/api/v1/admin/associateid/';
+        url = 'http://queryservice-env.eba-2rgvnhxx.ap-south-1.elasticbeanstalk.com/skill-tracker/api/v1/admin/associateid/';
         break;
       case 'skill':
-        url = 'http://localhost:9080/skill-tracker/api/v1/admin/skill/';
+        //url = 'http://localhost:9080/skill-tracker/api/v1/admin/skill/';
+        url = 'http://queryservice-env.eba-2rgvnhxx.ap-south-1.elasticbeanstalk.com/skill-tracker/api/v1/admin/skill/';
         break;
       default:
-        url = 'http://localhost:9080/skill-tracker/api/v1/admin/name/';
+        //url = 'http://localhost:9080/skill-tracker/api/v1/admin/name/';
+        url = 'http://queryservice-env.eba-2rgvnhxx.ap-south-1.elasticbeanstalk.com/skill-tracker/api/v1/admin/name/';
         break;
     }
     url = url + searchValue;
